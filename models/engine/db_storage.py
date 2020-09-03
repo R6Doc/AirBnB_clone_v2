@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-cLass DBStorage to use databasel
+Class DB Storage
 """
 
 import models
@@ -21,12 +21,12 @@ classes = {"Amenity": Amenity, "City": City,
 
 
 class DBStorage:
-    """INTER WITH DATABASE"""
+    """Class to use MYsql Database"""
     __engine = None
     __session = None
 
     def __init__(self):
-        """INIT"""
+        """Init instances of DB"""
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
@@ -41,7 +41,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """COMMENT"""
+        """query on the database sess"""
         new_dict = {}
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
@@ -52,25 +52,25 @@ class DBStorage:
         return (new_dict)
 
     def new(self, obj):
-        """COMMENT"""
+        """add the object to the current database session"""
         self.__session.add(obj)
 
     def save(self):
-        """IDK"""
+        """commit all changes to the datavase"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """UHHH YEA"""
+        """delete from the database"""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-        """COMMENT LMAO"""
+        """reload datae"""
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
 
     def close(self):
-        """THIS CLOSES LOL"""
+        """to call remove method"""
         self.__session.remove()
