@@ -38,3 +38,19 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+    def __init__(self, *args, **kwargs):
+        """Init place"""
+        super().__init__(*args, **kwargs)
+
+    if models.storage_t != 'db':
+        @property
+        def reviews(self):
+            """get atribute returns reviews"""
+            from models.review import Review
+            review_list = []
+            all_reviews = models.storage.all(Review)
+            for review in all_reviews.values():
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
